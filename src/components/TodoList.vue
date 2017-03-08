@@ -44,7 +44,7 @@
               <div class="card-content">
                 <div class="content">
                   <h3>{{ todo.title }}</h3>
-                  <small>{{ todo.created_at | moment('MMMM Do YYYY') }}</small>
+                  <small>{{ todo.created_at | moment('MMM Do YYYY') }}</small>
                 </div>
               </div>
               <footer class="card-footer">
@@ -56,6 +56,10 @@
                     @click="editTodo(todo)">
                   <span class="icon"><i class="fa fa-pencil"></i></span>
                 </a>
+                <a class="card-footer-item edit-todo" title="Delete"
+                    @click="deleteTodo(todo)">
+                  <span class="icon"><i class="fa fa-times"></i></span>
+                </a>
               </footer>
             </div>
           </div>
@@ -64,6 +68,7 @@
     </section>
     <div class="modal" :class="{ 'is-active': showEditForm  }" >
       <div class="modal-background"></div>
+      <input class="input" type="hidden" v-model="todoToEdit">
       <div class="modal-content">
         <div class="box">
           <p class="control">
@@ -84,8 +89,6 @@
   </div>
 </template>
 
-<!-- https://scotch.io/tutorials/build-a-to-do-app-with-vue-js-2 -->
-
 <script>
 
 import axios from 'axios'
@@ -98,6 +101,7 @@ export default {
       todos: [],
       newTodoText: '',
       editTodoText: '',
+      todoToEdit: {},
       showEditForm: false,
       apiUrl: 'http://58beac9f4389c312007f4044.mockapi.io/todo'
     }
@@ -135,22 +139,27 @@ export default {
       todo.completed = true;
       axios.put(this.apiUrl + '/' + todo.id, todo)
         .then(response => {
-          this.todos.pop(todo);
+          this.todos = this.todos.filter(todo => todo.id != response.data.id);
           this.newTodoText = '';
           this.canAddTodo = false;
         });
     },
     editTodo(todo) {
       this.showEditForm = true;
+      this.todoToEdit = todo;
       this.editTodoText = todo.title;
     },
-    saveTodo(todo) {
-      todo.title = editTodoText;
-      axios.put(this.apiUrl + '/' + todo.id, todo)
+    saveTodo() {
+      this.todoToEdit.title = this.editTodoText;
+      axios.put(this.apiUrl + '/' + this.todoToEdit.id, this.todoToEdit)
         .then(response => {
-          this.todos.pop(todo);
-          this.newTodoText = '';
-          this.canAddTodo = false;
+          this.removeEditModal();
+        });
+    },
+    deleteTodo(todo) {
+      axios.delete(this.apiUrl + '/' + todo.id)
+        .then(response => {
+          this.todos = this.todos.filter(todo => todo.id != response.data.id);
         });
     },
     removeEditModal() {
