@@ -62,6 +62,25 @@
         </div>
       </div>
     </section>
+    <div class="modal" :class="{ 'is-active': showEditForm  }" >
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <p class="control">
+            <input class="input" type="text" v-model="editTodoText">
+          </p>
+          <div class="control is-grouped">
+            <p class="control">
+              <button class="button is-primary" @click="saveTodo">Save</button>
+            </p>
+            <p class="control">
+              <button class="button is-light" @click="removeEditModal">Cancel</button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close" @click="removeEditModal"></button>
+    </div>
   </div>
 </template>
 
@@ -78,6 +97,8 @@ export default {
       canAddTodo: false,
       todos: [],
       newTodoText: '',
+      editTodoText: '',
+      showEditForm: false,
       apiUrl: 'http://58beac9f4389c312007f4044.mockapi.io/todo'
     }
   },
@@ -112,7 +133,6 @@ export default {
     },
     completeTodo(todo) {
       todo.completed = true;
-
       axios.put(this.apiUrl + '/' + todo.id, todo)
         .then(response => {
           this.todos.pop(todo);
@@ -121,10 +141,21 @@ export default {
         });
     },
     editTodo(todo) {
-      // enable the edit modal
+      this.showEditForm = true;
+      this.editTodoText = todo.title;
     },
-    updateTodo(todo) {
-
+    saveTodo(todo) {
+      todo.title = editTodoText;
+      axios.put(this.apiUrl + '/' + todo.id, todo)
+        .then(response => {
+          this.todos.pop(todo);
+          this.newTodoText = '';
+          this.canAddTodo = false;
+        });
+    },
+    removeEditModal() {
+      this.showEditForm = false;
+      this.editTodoText = '';
     }
   }
 }
