@@ -17,4 +17,17 @@ describe('TodoList.vue', () => {
       expect(vm.todoToEdit).to.be.an('object');
       expect(vm.showEditForm).to.equal(false);
   });
+
+  // TODO:
+  // - show add todo input
+  // - show initial list
+  // - add todo
+  // - complete todo
+  // - edit todo
+  // - delete todo
+  // 
+  // - completed list?
+  // - delete from completed list?
+  // - move completed back to not completed?
 });
+
