@@ -62,39 +62,15 @@
         </div>
       </div>
     </section>
-    <hr>
-    <section class="section">
-      <div class="container">
-        <div class="columns is-multiline">
-          <div class="column is-one-quarter" v-for="todo in todos">
-            <div class="card">
-              <div class="card-content">
-                <div class="content">
-                  <h3>{{ todo.title }}</h3>
-                  <small>{{ todo.created_at | moment('MMMM Do YYYY') }}</small>
-                </div>
-              </div>
-              <footer class="card-footer">
-                <a class="card-footer-item complete-todo" title="Complete" 
-                    @click="completeTodo(todo)">
-                  <span class="icon"><i class="fa fa-check"></i></span>
-                </a>
-                <a class="card-footer-item edit-todo" title="Edit"
-                    @click="editTodo(todo)">
-                  <span class="icon"><i class="fa fa-pencil"></i></span>
-                </a>
-              </footer>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
 <!-- https://scotch.io/tutorials/build-a-to-do-app-with-vue-js-2 -->
 
 <script>
+
+import axios from 'axios'
+
 export default {
   name: 'todo-list',
   data () {
@@ -113,31 +89,41 @@ export default {
       this.canAddTodo = this.newTodo !== '';
     },
     fetchTodos() {
-      fetch(this.apiUrl)
-        .then(blob => blob.json())
-        .then(data => this.todos.push(...data));
+      axios.get(this.apiUrl)
+        .then(response => {
+          this.todos = response.data.filter(todo => !todo.completed);
+        });
     },
     addTodo() {
       const id = this.todos.length;
       let newTodo = {
         id: id,
-        text: this.newTodoText,
+        title: this.newTodoText,
         created_at: new Date(),
-        complete: false
+        completed: false
       };
 
-      this.todos.push(newTodo);
-      this.newTodoText = '';
-      this.canAddTodo = false;
+      axios.post(this.apiUrl)
+        .then(response => {
+          this.todos.push(newTodo);
+          this.newTodoText = '';
+          this.canAddTodo = false;
+        });
     },
     completeTodo(todo) {
-      let todoToBeCompleted = this.todos.filter((item) => {
-        return todo.id === item.id;
-      });
+      todo.completed = true;
 
-      console.log(todoToBeCompleted);
+      axios.put(this.apiUrl + '/' + todo.id, todo)
+        .then(response => {
+          this.todos.pop(todo);
+          this.newTodoText = '';
+          this.canAddTodo = false;
+        });
     },
     editTodo(todo) {
+      // enable the edit modal
+    },
+    updateTodo(todo) {
 
     }
   }
