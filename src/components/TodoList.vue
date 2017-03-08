@@ -131,7 +131,11 @@ export default {
       this.canAddTodo = false;
     },
     completeTodo(todo) {
+      let todoToBeCompleted = this.todos.filter((item) => {
+        return todo.id === item.id;
+      });
 
+      console.log(todoToBeCompleted);
     },
     editTodo(todo) {
 

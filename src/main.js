@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.use(require('vue-moment'));
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 
