@@ -1,41 +1,28 @@
 <template>
   <div class="todo-list">
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container">
-          <div class="columns">
-              <div class="column">
-                <h1 class="title">Todos</h1>
-              </div>
-              <div class="column">
-                <p class="control has-addons">
-                  <input class="input" type="text" name="new-todo" 
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+            <div class="column">
+              <h1 class="title">Todos ({{ todos.length }})</h1>
+            </div>
+            <div class="column">
+              <p class="control has-addons">
+                <input class="input" type="text" name="new-todo" 
                     v-model="newTodoText" 
                     @keyup="checkCanAddTodo" 
                     placeholder="Add thing to do">
-                  <a id="add-todo-button" class="button is-primary" 
-                    :class="{ 'is-disabled': !canAddTodo  }" 
+                <a id="add-todo-button" class="button is-primary" 
+                    :class="{ 'is-disabled': !canAddTodo }" 
                     @click="addTodo">
-                    <span class="icon is-small"><i class="fa fa-plus"></i></span>
-                  </a>
-                </p>
-              </div>
-              </div>
-              <hr>
-          </div>
+                  <span class="icon is-small"><i class="fa fa-plus"></i></span>
+                </a>
+              </p>
+            </div>
+            </div>
+            <hr>
         </div>
     </section>
-    <div class="container is-hidden" id="success-message">
-      <div class="columns">
-        <div class="column is-one-third"></div>
-        <div class="column is-one-third">
-          <div class="notification is-success">
-            <button class="delete"></button>Item Completed.
-          </div>
-        </div>
-        <div class="column is-one-third"></div>
-      </div>
-    </div>
     <section class="section">
       <div class="container">
         <div class="columns is-multiline">
@@ -63,10 +50,30 @@
               </footer>
             </div>
           </div>
+          <hr>
         </div>
       </div>
     </section>
-    <div class="modal" :class="{ 'is-active': showEditForm  }" >
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Completed Todos ({{ completedTodos.length }})</h1>
+        <hr>
+        <div class="columns is-multiline">
+          <div class="column is-2" v-for="todo in completedTodos">
+            <div class="card">
+              <div class="card-content">
+                <div class="content">
+                  <h3>{{ todo.title }}</h3>
+                  <small>{{ todo.created_at | moment('MMM Do YYYY') }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </section>
+    <div class="modal" :class="{ 'is-active': showEditForm }" >
       <div class="modal-background"></div>
       <input class="input" type="hidden" v-model="todoToEdit">
       <div class="modal-content">
@@ -91,19 +98,27 @@
 
 <script>
 
-import axios from 'axios'
+
+import axios from 'axios';
+import { Collapse, Item as CollapseItem } from 'vue-bulma-collapse';
+
 
 export default {
   name: 'todo-list',
+  components: {
+    Collapse,
+    CollapseItem
+  },
   data () {
     return {
       canAddTodo: false,
       todos: [],
+      completedTodos: [],
       newTodoText: '',
       editTodoText: '',
       todoToEdit: {},
       showEditForm: false,
-      apiUrl: 'http://58beac9f4389c312007f4044.mockapi.io/todo'
+      apiUrl: 'https://58beac9f4389c312007f4044.mockapi.io/todo'
     }
   },
   mounted() {
@@ -117,6 +132,7 @@ export default {
       axios.get(this.apiUrl)
         .then(response => {
           this.todos = response.data.filter(todo => !todo.completed);
+          this.completedTodos = response.data.filter(todo => todo.completed);
         });
     },
     addTodo() {
@@ -140,6 +156,7 @@ export default {
       axios.put(this.apiUrl + '/' + todo.id, todo)
         .then(response => {
           this.todos = this.todos.filter(todo => todo.id != response.data.id);
+          this.completedTodos.push(todo);
           this.newTodoText = '';
           this.canAddTodo = false;
         });
