@@ -59,9 +59,10 @@
         <h1 class="title"><a @click="toggleCompletedTodos">Completed Todos ({{ completedTodos.length }})</a></h1>
         <hr>
         <div class="columns is-multiline" :class="{ 'is-hidden': !showCompleted }">
-          <div class="column is-2" v-for="todo in completedTodos">
+          <div class="column is-3" v-for="todo in completedTodos">
             <div class="card">
               <div class="card-content">
+                <button class="delete is-pulled-right" @click="deleteTodo(todo)"></button>
                 <div class="content">
                   <h3>{{ todo.title }}</h3>
                   <small>{{ todo.created_at | moment('MMM Do YYYY') }}</small>
@@ -169,7 +170,7 @@ export default {
     deleteTodo(todo) {
       axios.delete(this.apiUrl + '/' + todo.id)
         .then(response => {
-          this.todos = this.todos.filter(todo => todo.id != response.data.id);
+          this.fetchTodos();
         });
     },
     removeEditModal() {
