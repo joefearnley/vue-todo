@@ -56,9 +56,9 @@
     </section>
     <section class="section">
       <div class="container">
-        <h1 class="title">Completed Todos ({{ completedTodos.length }})</h1>
+        <h1 class="title"><a @click="toggleCompletedTodos">Completed Todos ({{ completedTodos.length }})</a></h1>
         <hr>
-        <div class="columns is-multiline">
+        <div class="columns is-multiline" :class="{ 'is-hidden': !showCompleted }">
           <div class="column is-2" v-for="todo in completedTodos">
             <div class="card">
               <div class="card-content">
@@ -110,6 +110,7 @@ export default {
       editTodoText: '',
       todoToEdit: {},
       showEditForm: false,
+      showCompleted: false,
       apiUrl: 'https://58beac9f4389c312007f4044.mockapi.io/todo'
     }
   },
@@ -174,6 +175,9 @@ export default {
     removeEditModal() {
       this.showEditForm = false;
       this.editTodoText = '';
+    },
+    toggleCompletedTodos() {
+      this.showCompleted = this.showCompleted ? false : true; 
     }
   }
 }
