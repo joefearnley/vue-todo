@@ -97,18 +97,10 @@
 </template>
 
 <script>
-
-
 import axios from 'axios';
-import { Collapse, Item as CollapseItem } from 'vue-bulma-collapse';
-
 
 export default {
   name: 'todo-list',
-  components: {
-    Collapse,
-    CollapseItem
-  },
   data () {
     return {
       canAddTodo: false,
@@ -136,7 +128,7 @@ export default {
         });
     },
     addTodo() {
-      const id = this.todos.length;
+      const id = this.todos.length + 1;
       let newTodo = {
         id: id,
         title: this.newTodoText,
@@ -144,9 +136,9 @@ export default {
         completed: false
       };
 
-      axios.post(this.apiUrl)
+      axios.post(this.apiUrl, newTodo)
         .then(response => {
-          this.todos.push(newTodo);
+          this.fetchTodos();
           this.newTodoText = '';
           this.canAddTodo = false;
         });

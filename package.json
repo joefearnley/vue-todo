@@ -15,7 +15,6 @@
     "bulma": "^0.3.2",
     "vue": "^2.2.1",
     "vue-axios": "^1.2.2",
-    "vue-bulma-collapse": "^1.0.3",
     "vue-moment": "^2.0.2"
   },
   "devDependencies": {
