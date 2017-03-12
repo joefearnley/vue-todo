@@ -1,6 +1,7 @@
 # vue-todo
 
-> A Vue.js project
+To learn more about [Vue.js](https://vuejs.org/) and [vue-cli](https://github.com/vuejs/vue-cli), I built 
+this todo application. It utilizes [Bulma](http://bulma.io/) for the UI.
 
 ## Build Setup
 
@@ -23,5 +24,3 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
