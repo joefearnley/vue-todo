@@ -8,12 +8,12 @@
             </div>
             <div class="column">
               <p class="control has-addons">
-                <input class="input" type="text" name="new-todo" 
-                    v-model="newTodoText" 
-                    @keyup="checkCanAddTodo" 
+                <input class="input" type="text" name="new-todo"
+                    v-model="newTodoText"
+                    @keyup="checkCanAddTodo"
                     placeholder="Add thing to do">
-                <a id="add-todo-button" class="button is-primary" 
-                    :class="{ 'is-disabled': !canAddTodo }" 
+                <a id="add-todo-button" class="button is-primary"
+                    :class="{ 'is-disabled': !canAddTodo }"
                     @click="addTodo">
                   <span class="icon is-small"><i class="fa fa-plus"></i></span>
                 </a>
@@ -27,7 +27,7 @@
       <div class="container">
         <div class="columns is-multiline">
           <div class="column is-one-quarter" v-for="todo in todos">
-            <todo todo="todo"></todo>
+            <todo :todo="todo"></todo>
           </div>
           <hr>
         </div>
@@ -53,26 +53,6 @@
         </div>
       </div>
     </section>
-    <div class="modal" :class="{ 'is-active': showEditForm }" >
-      <div class="modal-background"></div>
-      <input class="input" type="hidden" v-model="todoToEdit">
-      <div class="modal-content">
-        <div class="box">
-          <p class="control">
-            <input class="input" type="text" v-model="editTodoText">
-          </p>
-          <div class="control is-grouped">
-            <p class="control">
-              <button class="button is-primary" @click="saveTodo">Save</button>
-            </p>
-            <p class="control">
-              <button class="button is-light" @click="removeEditModal">Cancel</button>
-            </p>
-          </div>
-        </div>
-      </div>
-      <button class="modal-close" @click="removeEditModal"></button>
-    </div>
   </div>
 </template>
 
@@ -91,7 +71,6 @@ export default {
       todos: [],
       completedTodos: [],
       newTodoText: '',
-      showEditForm: false,
       showCompleted: false,
       apiUrl: 'http://58beac9f4389c312007f4044.mockapi.io/todo'
     }
@@ -159,7 +138,7 @@ export default {
       this.editTodoText = '';
     },
     toggleCompletedTodos() {
-      this.showCompleted = this.showCompleted ? false : true; 
+      this.showCompleted = this.showCompleted ? false : true;
     }
   }
 }
