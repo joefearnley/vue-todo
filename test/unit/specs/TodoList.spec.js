@@ -7,7 +7,7 @@ describe('TodoList.vue', () => {
   const vm = new Constructor().$mount();
 
   it('should render the title', () => {
-    expect(vm.$el.querySelector('.hero-body h1.title').textContent).to.equal('Todos');
+    expect(vm.$el.querySelector('h1.todos-title').textContent).to.equal('Todos (0)');
   });
 
   it('should initialize data', () => {
@@ -17,6 +17,9 @@ describe('TodoList.vue', () => {
       expect(vm.todoToEdit).to.be.an('object');
       expect(vm.showEditForm).to.equal(false);
   });
+
+  it('should add a todo', () => {
+  })''
 
   // TODO:
   // - show add todo input

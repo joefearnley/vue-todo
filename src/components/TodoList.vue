@@ -4,7 +4,7 @@
       <div class="container">
         <div class="columns">
             <div class="column">
-              <h1 class="title">Todos ({{ todos.length }})</h1>
+              <h1 class="title todos-title">Todos ({{ todos.length }})</h1>
             </div>
             <div class="column">
               <p class="control has-addons">
@@ -75,7 +75,7 @@
     </section>
     <section class="section">
       <div class="container">
-        <h1 class="title"><a @click="toggleCompletedTodos">Completed Todos ({{ completedTodos.length }})</a></h1>
+        <h1 class="title completed-todos-title"><a @click="toggleCompletedTodos">Completed Todos ({{ completedTodos.length }})</a></h1>
         <hr>
         <div class="columns is-multiline" :class="{ 'is-hidden': !showCompleted }">
           <div class="column is-3" v-for="todo in completedTodos">
