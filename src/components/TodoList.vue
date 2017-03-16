@@ -98,6 +98,9 @@
 
 <script>
 import axios from 'axios';
+import Vue from 'vue';
+
+Vue.use(require('vue-moment'));
 
 export default {
   name: 'todo-list',
@@ -138,9 +141,9 @@ export default {
         completed: false
       };
 
-      axios.post(this.apiUrl, newTodo)
+      return axios.post(this.apiUrl, newTodo)
         .then(response => {
-          this.fetchTodos();
+          this.todos.push(newTodo);
           this.newTodoText = '';
           this.canAddTodo = false;
         });
