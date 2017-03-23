@@ -122,9 +122,6 @@ export default {
     this.fetchTodos();
   },
   methods: {
-    checkCanAddTodo (event) {
-      this.canAddTodo = this.newTodo !== '';
-    },
     fetchTodos() {
       axios.get(this.apiUrl)
         .then(response => {
@@ -141,22 +138,23 @@ export default {
         completed: false
       };
 
-      return axios.post(this.apiUrl, newTodo)
-        .then(response => {
-          this.todos.push(newTodo);
-          this.newTodoText = '';
-          this.canAddTodo = false;
-        });
+      this.todos.push(newTodo);
+      this.newTodoText = '';
+      this.canAddTodo = false;
+
+      axios.post(this.apiUrl, newTodo)
+        .then(response => console.log('Todo Successfully added.'));
     },
     completeTodo(todo) {
       todo.completed = true;
+      
+      this.todos = this.todos.filter((t) =>  t.id !== todo.id);
+      this.completedTodos.push(todo);
+      this.newTodoText = '';
+      this.canAddTodo = false;
+      
       axios.put(this.apiUrl + '/' + todo.id, todo)
-        .then(response => {
-          this.todos = this.todos.filter(todo => todo.id != response.data.id);
-          this.completedTodos.push(todo);
-          this.newTodoText = '';
-          this.canAddTodo = false;
-        });
+        .then(response => console.log('completing todo ' + todo.id));
     },
     editTodo(todo) {
       this.showEditForm = true;
@@ -175,6 +173,9 @@ export default {
         .then(response => {
           this.fetchTodos();
         });
+    },
+    checkCanAddTodo () {
+      this.canAddTodo = this.newTodo !== '';
     },
     removeEditModal() {
       this.showEditForm = false;
