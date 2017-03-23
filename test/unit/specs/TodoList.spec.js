@@ -75,6 +75,10 @@ describe('Methods', () => {
     
     done();
   });
+  
+    it('should change a todo', (done) => {
+      
+    });
 });
 
 // describe('The Todo list renders properly', () => {
