@@ -148,7 +148,7 @@ export default {
     completeTodo(todo) {
       todo.completed = true;
       
-      this.todos = this.todos.filter((t) =>  t.id !== todo.id);
+      this.todos = this.todos.filter((t) => t.id !== todo.id);
       this.completedTodos.push(todo);
       this.newTodoText = '';
       this.canAddTodo = false;
@@ -169,10 +169,9 @@ export default {
         });
     },
     deleteTodo(todo) {
-      axios.delete(this.apiUrl + '/' + todo.id)
-        .then(response => {
-          this.fetchTodos();
-        });
+      this.todos = this.todos.filter((t) => t.id !== todo.id);
+      this.completedTodos = this.completedTodos.filter((t) =>  t.id !== todo.id);
+      axios.delete(this.apiUrl + '/' + todo.id);
     },
     checkCanAddTodo () {
       this.canAddTodo = this.newTodo !== '';

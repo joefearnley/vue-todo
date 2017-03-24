@@ -46,39 +46,93 @@ describe('Methods', () => {
   });
 
   it('should add a todo', (done) => {
-    const newTodo = {
-      id: 4,
-      title: 'Todo 3',
-      created_at: new Date(),
-      completed: false
-    };
-
+    const newTodo = { id: 4, title: 'Todo 3', created_at: new Date(), completed: false };
     vm.addTodo(newTodo);
-    
+
     expect(vm.todos.length).to.equal(3);
     expect(vm.completedTodos.length).to.equal(1);
     expect(vm.newTodoText).to.equal('');
     expect(vm.canAddTodo).to.equal(false);
-    
     done();
   });
   
   it('should complete a todo', (done) => {
     const todoToBeCompleted = vm.todos.find((todo) => todo.id = 4);
-
     vm.completeTodo(todoToBeCompleted);
 
     expect(vm.todos.length).to.equal(2);
     expect(vm.completedTodos.length).to.equal(2);
     expect(vm.newTodoText).to.equal('');
     expect(vm.canAddTodo).to.equal(false);
-    
     done();
   });
   
-    it('should change a todo', (done) => {
-      
+  it('should edit a todo', (done) => {
+    const todo = vm.todos.find((todo) => todo.id = 1);
+    vm.editTodo(todo);
+
+    expect(vm.showEditForm).to.equal(true);
+    expect(vm.todoToEdit).to.equal(todo);
+    expect(vm.editTodoText).to.equal(todo.title);
+    done();
+  });
+    
+  it('should save a todo', (done) => {
+    const todo = vm.todos.find((todo) => todo.id = 1);
+    vm.editTodoText = 'This is a Todo';
+    vm.saveTodo(todo);
+
+    moxios.wait(function () {
+      moxios.requests.mostRecent().respondWith({
+        status: 200
+      }).then(function () {
+        expect(vm.todoToEdit.title).to.equal( 'This is a Todo');
+        expect(vm.showEditForm).to.equal(false);
+        expect(vm.editTodoText).to.equal('');
+        done();
+      });
     });
+  });
+  
+  it('should delete a todo', (done) => {
+    const todo = vm.todos.find((todo) => todo.id = 4);
+    expect(vm.todos.length).to.equal(2);
+    
+    vm.deleteTodo(todo);
+    
+    expect(vm.todos.length).to.equal(1);
+    done();
+  });
+  
+  it('should check can add todo', (done) => {
+    vm.newTodo = '';
+    vm.checkCanAddTodo();
+    expect(vm.canAddTodo).to.equal(false);
+    
+    vm.newTodo = 'Test';
+    vm.checkCanAddTodo();
+    expect(vm.canAddTodo).to.equal(true);
+    done();
+  });
+
+  it('should remove modal', (done) => {
+    vm.removeEditModal();
+
+    expect(vm.showEditForm).to.equal(false);
+    expect(vm.editTodoText).to.equal('');
+    done();
+  });
+
+  it('should toggle completed todos', (done) => {
+    vm.showCompleted = false;
+    vm.toggleCompletedTodos();
+    expect(vm.showCompleted).to.equal(true);
+
+    vm.showCompleted = true;
+    vm.toggleCompletedTodos();
+    expect(vm.showCompleted).to.equal(false);
+    done();
+  });
 });
 
 // describe('The Todo list renders properly', () => {
