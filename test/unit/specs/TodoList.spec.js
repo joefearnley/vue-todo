@@ -161,24 +161,23 @@ describe('The Todo list works', () => {
     });
   });
   
-  // it('should render the todos', () => {
-  //   vm.fetchTodos();
-  //   moxios.wait(function () {
-  //     let request = moxios.requests.mostRecent();
-  //     request.respondWith({
-  //       status: 200,
-  //       response: fakeRepsonse
-  //     }).then(function () {
-  //       expect(vm.todos.length).to.equal(2);
-  //       expect(vm.completedTodos.length).to.equal(1);
-  //
-  //       const todos = [...vm.$el.querySelectorAll('.todo h3')];
-  //       expect(todos[0].textContent).to.equal('Todo 1');
-  //       expect(todos[1].textContent).to.equal('Todo 2');
-  //       done();
-  //     });
-  //   });
-  // });
+  it('should render the todos', () => {
+    moxios.wait(function () {
+      let request = moxios.requests.mostRecent();
+      
+      console.log(request);
+      
+      request.respondWith({ status: 200  }).then(function () {
+        expect(vm.todos.length).to.equal(2);
+        expect(vm.completedTodos.length).to.equal(1);
+  
+        const todos = [...vm.$el.querySelectorAll('.todo h3')];
+        expect(todos[0].textContent).to.equal('Todo 1');
+        expect(todos[1].textContent).to.equal('Todo 2');
+        done();
+      });
+    });
+  });
 });
 
 
