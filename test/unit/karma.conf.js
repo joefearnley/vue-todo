@@ -14,6 +14,7 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
     frameworks: ['mocha', 'sinon-chai', 'moxios'],
     reporters: ['spec', 'coverage'],
+    //reporters: ['spec'],
     files: [
       '../../node_modules/babel-polyfill/dist/polyfill.js',
       './index.js'
@@ -24,14 +25,13 @@ module.exports = function (config) {
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
+    },
+    coverageReporter: {
+      dir: './coverage',
+      reporters: [
+        { type: 'lcov', subdir: '.' },
+        { type: 'text-summary' }
+      ]
     }
-    // ,
-    // coverageReporter: {
-    //   dir: './coverage',
-    //   reporters: [
-    //     { type: 'lcov', subdir: '.' },
-    //     { type: 'text-summary' }
-    //   ]
-    // }
   })
 }
