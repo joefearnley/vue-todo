@@ -79,12 +79,14 @@
         <hr>
         <div class="columns is-multiline" :class="{ 'is-hidden': !showCompleted }">
           <div class="column is-3" v-for="todo in completedTodos">
-            <div class="card">
-              <div class="card-content">
-                <button class="delete is-pulled-right" @click="deleteTodo(todo)"></button>
-                <div class="content">
-                  <h3>{{ todo.title }}</h3>
-                  <small>{{ todo.created_at | moment('MMM Do YYYY') }}</small>
+            <div class="completed-todo">
+              <div class="card">
+                <div class="card-content">
+                  <button class="delete is-pulled-right" @click="deleteTodo(todo)"></button>
+                  <div class="content">
+                    <h3>{{ todo.title }}</h3>
+                    <small>{{ todo.created_at | moment('MMM Do YYYY') }}</small>
+                  </div>
                 </div>
               </div>
             </div>
@@ -127,7 +129,8 @@ export default {
         .then(response => {
           this.todos = response.data.filter(todo => !todo.completed);
           this.completedTodos = response.data.filter(todo => todo.completed);
-        });
+        })
+        .catch(error => console.log(error));
     },
     addTodo() {
       const id = this.todos.length + 1;

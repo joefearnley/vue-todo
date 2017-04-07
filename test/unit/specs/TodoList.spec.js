@@ -42,7 +42,7 @@ describe('Methods', () => {
         expect(vm.todos.length).to.equal(2);
         expect(vm.completedTodos.length).to.equal(1);
         done();
-      });
+      }).catch(done);
     });
   });
 
@@ -91,7 +91,7 @@ describe('Methods', () => {
         expect(vm.showEditForm).to.equal(false);
         expect(vm.editTodoText).to.equal('');
         done();
-      });
+      }).catch(done);
     });
   });
   
@@ -167,28 +167,33 @@ describe('The Todo list works', () => {
           expect(todosTitle).to.equal('Todos (2)');
           expect(completedTodosTitle).to.equal('Completed Todos (2)');
           done();
-      });
+      }).catch(done);
     });
   });
   
   it('should render the todos', (done) => {
 
-    const todoListVm2 = new Vue(TodoList).$mount();
+    const todoListVm = new Vue(TodoList).$mount();
     moxios.wait(() => {
       moxios.requests.mostRecent().respondWith({ 
-        status: 200
-        //,response: todoListFakeRepsonse
+        status: 200,
+        response: todoListFakeRepsonse
       }).then(() => {
-        console.log('lsakdjflaskjdlkasjfd');
-        
-          // expect(todoListVm2.todos.length).to.equal(2);
-          // expect(todoListVm2.completedTodos.length).to.equal(1);
 
-          // const todos = [...todoListVm2.$el.querySelectorAll('.todo h3')];
-          // expect(todos[0].textContent).to.equal('Todo 1');
-          // expect(todos[1].textContent).to.equal('Todo 2');
+        expect(todoListVm.todos.length).to.equal(3);
+        expect(todoListVm.completedTodos.length).to.equal(2);
+
+          const todos = [...todoListVm.$el.querySelectorAll('.todo h3')];
+          expect(todos[0].textContent).to.equal('Todo 1');
+          expect(todos[1].textContent).to.equal('Todo 2');
+          expect(todos[2].textContent).to.equal('Todo 3');
+
+          const completedTodos = [...todoListVm.$el.querySelectorAll('.completed-todo h3')];
+          console.log(completedTodos);
+          expect(completedTodos[0].textContent).to.equal('Completed Todo 1');
+          expect(completedTodos[1].textContent).to.equal('Completed Todo 2');
           done();
-      });
+      }).catch(done);
     });
   });
 
