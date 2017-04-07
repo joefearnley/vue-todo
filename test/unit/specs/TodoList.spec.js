@@ -189,7 +189,6 @@ describe('The Todo list works', () => {
           expect(todos[2].textContent).to.equal('Todo 3');
 
           const completedTodos = [...todoListVm.$el.querySelectorAll('.completed-todo h3')];
-          console.log(completedTodos);
           expect(completedTodos[0].textContent).to.equal('Completed Todo 1');
           expect(completedTodos[1].textContent).to.equal('Completed Todo 2');
           done();
