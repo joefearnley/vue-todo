@@ -207,8 +207,30 @@ describe('The Todo list works', () => {
 
     expect(vm.todos.length).to.equal(1);
 
+    const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
+    expect(todosTitle).to.equal('Todos (1)');
+
+    const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
+    expect(completedTodosTitle).to.equal('Completed Todos (0)');
+
     done();
   });
+  
+  // it('should complete a todo', (done) => {
+  //   const vm = new Vue(TodoList).$mount();
+    
+  //   expect(vm.todos.length).to.equal(0);
+
+  //   let addTodoInput = vm.$el.querySelector('#add-todo-input');
+  //   let addTodoButton = vm.$el.querySelector('#add-todo-button');
+
+  //   addTodoInput.value = 'This is a todo';
+  //   addTodoButton.click();
+
+  //   expect(vm.todos.length).to.equal(1);
+
+  //   done();
+  // });
 
   // TODO:
   // - show initial list
