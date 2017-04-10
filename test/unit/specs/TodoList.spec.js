@@ -137,8 +137,6 @@ describe('Methods', () => {
 });
 
 describe('The Todo list works', () => {
-
-  const todoListVm = new Vue(TodoList).$mount();
   const todoListFakeRepsonse = [
     { id: 1, title: 'Todo 1', created_at: new Date(), completed: false },
     { id: 2, title: 'Todo 2', created_at: new Date(), completed: false },
@@ -156,15 +154,16 @@ describe('The Todo list works', () => {
   });
 
   it('should render the titles', (done) => {
+    const vm = new Vue(TodoList).$mount();
     moxios.wait(() => {
       moxios.requests.mostRecent().respondWith({ 
-        status: 200
-        //,response: todoListFakeRepsonse
+        status: 200,
+        response: todoListFakeRepsonse
       }).then(() => {
-          const todosTitle = todoListVm.$el.querySelector('h1.todos-title').textContent;
-          const completedTodosTitle = todoListVm.$el.querySelector('h1.completed-todos-title').textContent;
+          const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
+          const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
 
-          expect(todosTitle).to.equal('Todos (2)');
+          expect(todosTitle).to.equal('Todos (3)');
           expect(completedTodosTitle).to.equal('Completed Todos (2)');
           done();
       }).catch(done);
@@ -172,22 +171,22 @@ describe('The Todo list works', () => {
   });
   
   it('should render the todos', (done) => {
-    const todoListVm = new Vue(TodoList).$mount();
+    const vm = new Vue(TodoList).$mount();
     moxios.wait(() => {
       moxios.requests.mostRecent().respondWith({ 
         status: 200,
         response: todoListFakeRepsonse
       }).then(() => {
 
-        expect(todoListVm.todos.length).to.equal(3);
-        expect(todoListVm.completedTodos.length).to.equal(2);
+        expect(vm.todos.length).to.equal(3);
+        expect(vm.completedTodos.length).to.equal(2);
 
-          const todos = [...todoListVm.$el.querySelectorAll('.todo h3')];
+          const todos = [...vm.$el.querySelectorAll('.todo h3')];
           expect(todos[0].textContent).to.equal('Todo 1');
           expect(todos[1].textContent).to.equal('Todo 2');
           expect(todos[2].textContent).to.equal('Todo 3');
 
-          const completedTodos = [...todoListVm.$el.querySelectorAll('.completed-todo h3')];
+          const completedTodos = [...vm.$el.querySelectorAll('.completed-todo h3')];
           expect(completedTodos[0].textContent).to.equal('Completed Todo 1');
           expect(completedTodos[1].textContent).to.equal('Completed Todo 2');
           done();
