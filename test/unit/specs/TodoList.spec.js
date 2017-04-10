@@ -172,7 +172,6 @@ describe('The Todo list works', () => {
   });
   
   it('should render the todos', (done) => {
-
     const todoListVm = new Vue(TodoList).$mount();
     moxios.wait(() => {
       moxios.requests.mostRecent().respondWith({ 
@@ -196,6 +195,21 @@ describe('The Todo list works', () => {
     });
   });
 
+  it('should add a todo', (done) => {
+    const vm = new Vue(TodoList).$mount();
+    
+    expect(vm.todos.length).to.equal(0);
+
+    let addTodoInput = vm.$el.querySelector('#add-todo-input');
+    let addTodoButton = vm.$el.querySelector('#add-todo-button');
+
+    addTodoInput.value = 'This is a todo';
+    addTodoButton.click();
+
+    expect(vm.todos.length).to.equal(1);
+
+    done();
+  });
 
   // TODO:
   // - show initial list

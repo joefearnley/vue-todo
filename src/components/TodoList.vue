@@ -8,7 +8,7 @@
             </div>
             <div class="column">
               <p class="control has-addons">
-                <input class="input" type="text" name="new-todo"
+                <input id="add-todo-input" class="input" type="text" name="new-todo"
                     v-model="newTodoText"
                     @keyup="checkCanAddTodo"
                     placeholder="Add thing to do">
