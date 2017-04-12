@@ -208,7 +208,7 @@ describe('The Todo list works', () => {
     expect(vm.todos.length).to.equal(1);
 
     const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
-    expect(todosTitle).to.equal('Todos (1)');
+    expect(todosTitle).to.equal('Todos (0)');
 
     const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
     expect(completedTodosTitle).to.equal('Completed Todos (0)');
@@ -216,21 +216,20 @@ describe('The Todo list works', () => {
     done();
   });
   
-  // it('should complete a todo', (done) => {
-  //   const vm = new Vue(TodoList).$mount();
-    
-  //   expect(vm.todos.length).to.equal(0);
+  it('should complete a todo', (done) => {
+    const vm = new Vue(TodoList).$mount();
 
-  //   let addTodoInput = vm.$el.querySelector('#add-todo-input');
-  //   let addTodoButton = vm.$el.querySelector('#add-todo-button');
+    expect(vm.todos.length).to.equal(0);
 
-  //   addTodoInput.value = 'This is a todo';
-  //   addTodoButton.click();
+    let addTodoInput = vm.$el.querySelector('#add-todo-input');
+    let addTodoButton = vm.$el.querySelector('#add-todo-button');
 
-  //   expect(vm.todos.length).to.equal(1);
+    addTodoInput.value = 'This is a todo';
+    addTodoButton.click();
 
-  //   done();
-  // });
+    expect(vm.todos.length).to.equal(1);
+    done();
+  });
 
   // TODO:
   // - show initial list
