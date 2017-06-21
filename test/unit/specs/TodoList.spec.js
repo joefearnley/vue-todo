@@ -160,11 +160,8 @@ describe('The Todo list works', () => {
         status: 200,
         response: todoListFakeRepsonse
       }).then(() => {
-          const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
-          const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
-
-          expect(todosTitle).to.equal('Todos (3)');
-          expect(completedTodosTitle).to.equal('Completed Todos (2)');
+          expect(vm.$el.querySelector('h1.todos-title').textContent).to.equal('Todos (3)');
+          expect(vm.$el.querySelector('h1.completed-todos-title').textContent).to.equal('Completed Todos (2)');
           done();
       }).catch(done);
     });
@@ -177,7 +174,6 @@ describe('The Todo list works', () => {
         status: 200,
         response: todoListFakeRepsonse
       }).then(() => {
-
         expect(vm.todos.length).to.equal(3);
         expect(vm.completedTodos.length).to.equal(2);
 
@@ -196,26 +192,19 @@ describe('The Todo list works', () => {
 
   it('should add a todo', (done) => {
     const vm = new Vue(TodoList).$mount();
-    
+
     expect(vm.todos.length).to.equal(0);
     expect(vm.completedTodos.length).to.equal(0);
 
-    let addTodoInput = vm.$el.querySelector('#add-todo-input');
-    let addTodoButton = vm.$el.querySelector('#add-todo-button');
+    vm.$el.querySelector('#add-todo-input').value = 'This is a todo';
+    vm.$el.querySelector('#add-todo-button').click();
 
-    addTodoInput.value = 'This is a todo';
-    addTodoButton.click();
-
-      expect(vm.todos.length).to.equal(1);
-      expect(vm.completedTodos.length).to.equal(0);
+    expect(vm.todos.length).to.equal(1);
+    expect(vm.completedTodos.length).to.equal(0);
 
     Vue.nextTick(() => {
-      const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
-      const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
-
-      expect(todosTitle).to.equal('Todos (1)');
-      expect(completedTodosTitle).to.equal('Completed Todos (0)');
-      
+      expect(vm.$el.querySelector('h1.todos-title').textContent).to.equal('Todos (1)');
+      expect(vm.$el.querySelector('h1.completed-todos-title').textContent).to.equal('Completed Todos (0)');
       done();
     });
   });
@@ -229,27 +218,23 @@ describe('The Todo list works', () => {
     expect(vm.completedTodos.length).to.equal(0);
 
     Vue.nextTick(() => {
-      const completeTodoButton = vm.$el.querySelector('a.card-footer-item.complete-todo');
-      completeTodoButton.click();
+      expect(vm.$el.querySelector('h1.todos-title').textContent).to.equal('Todos (1)');
+      expect(vm.$el.querySelector('h1.completed-todos-title').textContent).to.equal('Completed Todos (0)');
+      
+      vm.$el.querySelector('a.card-footer-item.complete-todo').click();
 
       expect(vm.todos.length).to.equal(0);
       expect(vm.completedTodos.length).to.equal(1);
 
       Vue.nextTick(() => {
-        const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
-        const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
-
-        expect(todosTitle).to.equal('Todos (0)');
-        expect(completedTodosTitle).to.equal('Completed Todos (1)');
-        
+        expect(vm.$el.querySelector('h1.todos-title').textContent).to.equal('Todos (0)');
+        expect(vm.$el.querySelector('h1.completed-todos-title').textContent).to.equal('Completed Todos (1)');
         done();
       });
     });
-
   });
 
   // TODO:
-  // - complete todo
   // - edit todo
   // - delete todo
   // 
