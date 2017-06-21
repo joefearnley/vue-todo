@@ -206,31 +206,49 @@ describe('The Todo list works', () => {
     addTodoInput.value = 'This is a todo';
     addTodoButton.click();
 
-    expect(vm.todos.length).to.equal(1);
-    expect(vm.completedTodos.length).to.equal(0);
+      expect(vm.todos.length).to.equal(1);
+      expect(vm.completedTodos.length).to.equal(0);
 
-    done();
+    Vue.nextTick(() => {
+      const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
+      const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
+
+      expect(todosTitle).to.equal('Todos (1)');
+      expect(completedTodosTitle).to.equal('Completed Todos (0)');
+      
+      done();
+    });
   });
   
   it('should complete a todo', (done) => {
     const vm = new Vue(TodoList).$mount();
-    
+
     vm.todos.push({ id: 1, title: 'Todo 1', created_at: new Date(), completed: false });
-    
+
     expect(vm.todos.length).to.equal(1);
     expect(vm.completedTodos.length).to.equal(0);
 
-    const completeTodoButton = vm.$el.querySelector('.card-footer-item');
-    completeTodoButton.click();
+    Vue.nextTick(() => {
+      const completeTodoButton = vm.$el.querySelector('a.card-footer-item.complete-todo');
+      completeTodoButton.click();
 
-    expect(vm.todos.length).to.equal(0);
-    expect(vm.completedTodos.length).to.equal(1);
-    done();
+      expect(vm.todos.length).to.equal(0);
+      expect(vm.completedTodos.length).to.equal(1);
+
+      Vue.nextTick(() => {
+        const todosTitle = vm.$el.querySelector('h1.todos-title').textContent;
+        const completedTodosTitle = vm.$el.querySelector('h1.completed-todos-title').textContent;
+
+        expect(todosTitle).to.equal('Todos (0)');
+        expect(completedTodosTitle).to.equal('Completed Todos (1)');
+        
+        done();
+      });
+    });
+
   });
 
   // TODO:
-  // - show initial list
-  // - add todo
   // - complete todo
   // - edit todo
   // - delete todo
