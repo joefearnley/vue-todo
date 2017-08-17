@@ -54,11 +54,11 @@
               <div class="modal-content">
                 <div class="box">
                   <p class="control">
-                    <input class="input" type="text" v-model="editTodoText">
+                    <input id="edit-todo-input" class="input" type="text" v-model="editTodoText">
                   </p>
                   <div class="control is-grouped">
                     <p class="control">
-                      <button class="button is-primary" @click="saveTodo">Save</button>
+                      <button  id="save-todo" class="button is-primary" @click="saveTodo">Save</button>
                     </p>
                     <p class="control">
                       <button class="button is-light" @click="removeEditModal">Cancel</button>
@@ -117,7 +117,7 @@ export default {
       todoToEdit: {},
       editTodoText: '',
       showEditForm: false,
-      apiUrl: 'http://58beac9f4389c312007f4044.mockapi.io/todo'
+      apiUrl: 'https://58beac9f4389c312007f4044.mockapi.io/todo'
     }
   },
   mounted() {
@@ -166,6 +166,7 @@ export default {
     },
     saveTodo() {
       this.todoToEdit.title = this.editTodoText;
+
       axios.put(this.apiUrl + '/' + this.todoToEdit.id, this.todoToEdit)
         .then(response => {
           this.removeEditModal();

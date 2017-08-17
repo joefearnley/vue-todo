@@ -234,6 +234,27 @@ describe('The Todo list works', () => {
     });
   });
 
+  it('should edit a todo', (done) => {
+    const vm = new Vue(TodoList).$mount();
+
+    vm.todos.push({ id: 1, title: 'Todo 1', created_at: new Date(), completed: false });
+
+    Vue.nextTick(() => {
+      vm.$el.querySelector('a.card-footer-item.edit-todo').click();
+
+      Vue.nextTick(() => {
+        vm.$el.querySelector('#edit-todo-input').value = 'First Todo';
+        vm.$el.querySelector('#save-todo').click();
+
+        Vue.nextTick(() => {
+          const todos = [...vm.$el.querySelectorAll('.todo h3')];
+          expect(todos[0].textContent).to.equal('First Todo');
+          done();
+        });
+      });
+    });
+  });
+
   // TODO:
   // - edit todo
   // - delete todo
