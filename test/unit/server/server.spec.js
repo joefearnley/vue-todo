@@ -4,6 +4,7 @@ const server = require('../../../server');
 const expect = chai.expect;
 const axios = require('axios');
 
+setResource('todos');
 chai.use(chaiHttp);
 
 describe('Todos', () => {
@@ -12,31 +13,44 @@ describe('Todos', () => {
     initializeData();
   });
 
-  it('should have no todos', (done) => {
+  it('should get all todos', (done) => {
     chai.request(server)
       .get('/todos')
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.a('array');
-        expect(res.body.length).to.equal(0);
+        expect(res.body.length).to.equal(3);
         done();
       });
   });
   
   async function initializeData() {
-    console.log('alskfjalskjdflaskjdf');
     let todos = await axios.get('http://5a0c4a196c25030012c335c9.mockapi.io/todos');
-    todos.data.forEach( todo => {
-      console.log(todo);
-    });
+    await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos/${todos.data[0].id}`);
+    await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos/${todos.data[1].id}`);
+    await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos/${todos.data[2].id}`);
 
-    let newTodo = {
-      title: 'title 1',
+    const todo1 = {
+      title: 'Todo 1',
       created_at: new Date(),
       completed: false
     };
 
-    let todo = await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos', newTodo);
+    const todo2 = {
+      title: 'Todo 2',
+      created_at: new Date(),
+      completed: false
+    };
+
+    const todo3 = {
+      title: 'Todo 3',
+      created_at: new Date(),
+      completed: false
+    };
+
+    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos',  todo1);
+    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos', todo2);
+    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos', todo3);
   }
 });
 
