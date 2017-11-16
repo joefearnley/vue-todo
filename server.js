@@ -35,6 +35,10 @@ app.patch('/todos/:id', (req, res) => {
     .then(response => res.json(response.data));
 });
 
+app.patch('/todos/complete/:id', (req, res) => {
+  axios.patch(`${apiUrl}/${resource}/${req.body.id}`, req.body)
+    .then(response => res.json(response.data));
+});
 
 setResource = (r) => {
   resource = r;
