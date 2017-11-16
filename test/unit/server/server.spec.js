@@ -56,6 +56,17 @@ describe('Todos', () => {
       });
   });
 
+  it('should delete a todo', (done) => {
+    chai.request(server)
+      .del(`/todos/${1}`)
+      .send(newTodo)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.length).to.equal(3);
+        done();
+      });
+  });
+
   async function initializeData() {
     const response = await axios.get('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test');
     const todos = response.data;

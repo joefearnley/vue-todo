@@ -31,6 +31,12 @@ app.post('/todos', (req, res) => {
     });
 });
 
+app.delete('/todos', (req, res) => {
+  axios.post(`${apiUrl}/${resource}/${req.body.id}`)
+    .then(response => {
+      res.json(response.data);
+    });
+});
 setResource = (r) => {
   resource = r;
 };
