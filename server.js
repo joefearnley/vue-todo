@@ -12,31 +12,29 @@ let resource = 'todos';
 
 app.get('/todos', (req, res) => {
   axios.get(`${apiUrl}/${resource}`)
-    .then(response => {
-      res.json(response.data);
-    });
+    .then(response => res.json(response.data));
 });
 
 app.get('/todos/:id', (req, res) => {
   axios.get(`${apiUrl}/${resource}/${req.params.id}`)
-    .then(response => {
-      res.json(response.data);
-    });
+    .then(response => res.json(response.data));
 });
 
 app.post('/todos', (req, res) => {
   axios.post(`${apiUrl}/${resource}`, req.body)
-    .then(response => {
-      res.json(response.data);
-    });
+    .then(response => res.json(response.data));
 });
 
 app.delete('/todos/:id', (req, res) => {
   axios.delete(`${apiUrl}/${resource}/${req.params.id}`)
-    .then(response => {
-      res.json(response.data);
-    });
+    .then(response => res.json(response.data));
 });
+
+app.patch('/todos/:id', (req, res) => {
+  axios.patch(`${apiUrl}/${resource}/${req.body.id}`, req.body)
+    .then(response => res.json(response.data));
+});
+
 
 setResource = (r) => {
   resource = r;

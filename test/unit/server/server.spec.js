@@ -60,10 +60,9 @@ describe('Todos', () => {
   it('can update a todo', (done) => {
     const updatedTodo = { id: 1, title: 'Updated Todo', completed: false };
     chai.request(server)
-      .put(`/todos/${updatedTodo.id}`)
-      .send(updatedTodo)
-      .end((err, res) => {
+      .patch(`/todos/${updatedTodo.id}`).send(updatedTodo).end((err, res) => {
         expect(res).to.have.status(200);
+        const todo = res.body;
         expect(todo.title).to.equal('Updated Todo');
         expect(todo.completed).be.false;
         done();
