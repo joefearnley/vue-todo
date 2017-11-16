@@ -116,8 +116,7 @@ export default {
       editTodoText: false,
       todoToEdit: {},
       editTodoText: '',
-      showEditForm: false,
-      apiUrl: 'https://58beac9f4389c312007f4044.mockapi.io/todo'
+      showEditForm: false
     }
   },
   mounted() {
@@ -125,7 +124,7 @@ export default {
   },
   methods: {
     fetchTodos() {
-      axios.get(this.apiUrl)
+      axios.get('/todo')
         .then(response => {
           this.todos = response.data.filter(todo => !todo.completed);
           this.completedTodos = response.data.filter(todo => todo.completed);
@@ -145,19 +144,19 @@ export default {
       this.newTodoText = '';
       this.canAddTodo = false;
 
-      axios.post(this.apiUrl, newTodo)
+      axios.post('/todos', newTodo)
         .then(response => console.log('Todo Successfully added.'));
     },
     completeTodo(todo) {
       todo.completed = true;
       
-      this.todos = this.todos.filter((t) => t.id !== todo.id);
+      this.todos = this.todos.filter(t => t.id !== todo.id);
       this.completedTodos.push(todo);
       this.newTodoText = '';
       this.canAddTodo = false;
       
-      axios.put(this.apiUrl + '/' + todo.id, todo)
-        .then(response => console.log('completing todo ' + todo.id));
+      axios.put(`/todos/${todo.id}`, todo)
+        .then(response => console.log(`completing todo ${todo.id}`));
     },
     editTodo(todo) {
       this.showEditForm = true;
@@ -167,7 +166,7 @@ export default {
     saveTodo() {
       this.todoToEdit.title = this.editTodoText;
 
-      axios.put(this.apiUrl + '/' + this.todoToEdit.id, this.todoToEdit)
+      axios.put(`/todos/${this.todoToEdit.id}`, this.todoToEdit)
         .then(response => {
           this.removeEditModal();
         });
@@ -175,7 +174,7 @@ export default {
     deleteTodo(todo) {
       this.todos = this.todos.filter((t) => t.id !== todo.id);
       this.completedTodos = this.completedTodos.filter((t) =>  t.id !== todo.id);
-      axios.delete(this.apiUrl + '/' + todo.id);
+      axios.delete(`/todos/${todo.id}`);
     },
     checkCanAddTodo () {
       this.canAddTodo = this.newTodo !== '';
