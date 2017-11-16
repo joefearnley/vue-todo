@@ -13,39 +13,30 @@ describe('Todos', () => {
     await initializeData();
   });
 
-  it('should get all todos', (done) => {
-    chai.request(server)
-      .get('/todos')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body).to.be.a('array');
-        expect(res.body.length).to.equal(3);
-        done();
-      });
+  it('can get all todos', (done) => {
+    chai.request(server).get('/todos').end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body).to.be.a('array');
+      expect(res.body.length).to.equal(3);
+      done();
+    });
   });
 
-  it('should get a todo', (done) => {
-    chai.request(server)
-      .get('/todos/1')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        const todo1 = res.body;
-        expect(todo1.id).to.equal('1');
-        expect(todo1.title).to.equal('Todo 1');
-        expect(todo1.completed).be.false;
-        done();
-      });
+  it('can get a todo', (done) => {
+    chai.request(server).get('/todos/1').end((err, res) => {
+      expect(res).to.have.status(200);
+      const todo1 = res.body;
+      expect(todo1.id).to.equal('1');
+      expect(todo1.title).to.equal('Todo 1');
+      expect(todo1.completed).be.false;
+      done();
+    });
   });
 
-  it('should add a todo', (done) => {
-    const newTodo = {
-      title: 'New Todo',
-      completed: false
-    };
-
+  it('can add a todo', (done) => {
     chai.request(server)
       .post('/todos')
-      .send(newTodo)
+      .send({ title: 'New Todo', completed: false })
       .end((err, res) => {
         expect(res).to.have.status(200);
         const todo = res.body;
@@ -56,13 +47,26 @@ describe('Todos', () => {
       });
   });
 
-  it('should delete a todo', (done) => {
+  it('can delete a todo', (done) => {
     chai.request(server).del(`/todos/${1}`).end((err, res) => {
         expect(res).to.have.status(200);
         chai.request(server).get('/todos').end((err, res) => {
           expect(res.body.length).to.equal(2);
           done();
         });
+      });
+  });
+
+  it('can update a todo', (done) => {
+    const updatedTodo = { id: 1, title: 'Updated Todo', completed: false };
+    chai.request(server)
+      .put(`/todos/${updatedTodo.id}`)
+      .send(updatedTodo)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(todo.title).to.equal('Updated Todo');
+        expect(todo.completed).be.false;
+        done();
       });
   });
 
@@ -73,20 +77,9 @@ describe('Todos', () => {
       await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos-test/${todos[i].id}`);
     }
 
-    const todo1 = {
-      title: 'Todo 1',
-      completed: false
-    };
-
-    const todo2 = {
-      title: 'Todo 2',
-      completed: false
-    };
-
-    const todo3 = {
-      title: 'Todo 3',
-      completed: false
-    };
+    const todo1 = { title: 'Todo 1', completed: false };
+    const todo2 = { title: 'Todo 2', completed: false };
+    const todo3 = { title: 'Todo 3', completed: false };
 
     await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test', todo1);
     await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test', todo2);
