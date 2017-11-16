@@ -31,12 +31,13 @@ app.post('/todos', (req, res) => {
     });
 });
 
-app.delete('/todos', (req, res) => {
-  axios.post(`${apiUrl}/${resource}/${req.body.id}`)
+app.delete('/todos/:id', (req, res) => {
+  axios.delete(`${apiUrl}/${resource}/${req.params.id}`)
     .then(response => {
       res.json(response.data);
     });
 });
+
 setResource = (r) => {
   resource = r;
 };

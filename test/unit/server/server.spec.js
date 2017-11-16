@@ -57,13 +57,12 @@ describe('Todos', () => {
   });
 
   it('should delete a todo', (done) => {
-    chai.request(server)
-      .del(`/todos/${1}`)
-      .send(newTodo)
-      .end((err, res) => {
+    chai.request(server).del(`/todos/${1}`).end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.length).to.equal(3);
-        done();
+        chai.request(server).get('/todos').end((err, res) => {
+          expect(res.body.length).to.equal(2);
+          done();
+        });
       });
   });
 
