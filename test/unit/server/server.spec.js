@@ -4,13 +4,13 @@ const server = require('../../../server');
 const expect = chai.expect;
 const axios = require('axios');
 
-setResource('todos');
+setResource('todos-test');
 chai.use(chaiHttp);
 
 describe('Todos', () => {
 
-  beforeEach(() => {
-    initializeData();
+  beforeEach(async () => {
+    await initializeData();
   });
 
   it('should get all todos', (done) => {
@@ -25,10 +25,11 @@ describe('Todos', () => {
   });
   
   async function initializeData() {
-    let todos = await axios.get('http://5a0c4a196c25030012c335c9.mockapi.io/todos');
-    await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos/${todos.data[0].id}`);
-    await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos/${todos.data[1].id}`);
-    await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos/${todos.data[2].id}`);
+    const response = await axios.get('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test');
+    const todos = response.data;
+    for (let i = 0; i < todos.length; i++) {
+      await axios.delete(`http://5a0c4a196c25030012c335c9.mockapi.io/todos-test/${todos[i].id}`);
+    }
 
     const todo1 = {
       title: 'Todo 1',
@@ -48,9 +49,9 @@ describe('Todos', () => {
       completed: false
     };
 
-    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos',  todo1);
-    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos', todo2);
-    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos', todo3);
+    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test', todo1);
+    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test', todo2);
+    await axios.post('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test', todo3);
   }
 });
 
