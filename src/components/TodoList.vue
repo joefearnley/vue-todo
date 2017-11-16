@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     fetchTodos() {
-      axios.get('/todo')
+      axios.get('/todos')
         .then(response => {
           this.todos = response.data.filter(todo => !todo.completed);
           this.completedTodos = response.data.filter(todo => todo.completed);
