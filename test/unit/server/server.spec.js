@@ -23,6 +23,20 @@ describe('Todos', () => {
         done();
       });
   });
+
+  it('should get a todo', (done) => {
+    chai.request(server)
+      .get('/todos/1')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+
+        const todo1 = res.body[0];
+        expect(todo1.id).to.equal(1);
+        expect(todo1.title).to.equal('Todo 1');
+        expect(todo1.completed).be.false;
+        done();
+      });
+  });
   
   async function initializeData() {
     const response = await axios.get('http://5a0c4a196c25030012c335c9.mockapi.io/todos-test');
