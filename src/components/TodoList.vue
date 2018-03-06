@@ -26,7 +26,7 @@
     <section class="section">
       <div class="container">
         <div class="columns is-multiline">
-          <div class="column is-one-quarter" v-for="todo in todos">
+          <div class="column is-one-quarter" v-for="todo in todos" :key="todo.id">
             <div class="todo">
               <div class="card">
                 <div class="card-content">
@@ -78,7 +78,7 @@
         <h1 class="title completed-todos-title"><a @click="toggleCompletedTodos">Completed Todos ({{ completedTodos.length }})</a></h1>
         <hr>
         <div class="columns is-multiline" :class="{ 'is-hidden': !showCompleted }">
-          <div class="column is-3" v-for="todo in completedTodos">
+          <div class="column is-3" v-for="todo in completedTodos" :key="todo.id">
             <div class="completed-todo">
               <div class="card">
                 <div class="card-content">
@@ -99,33 +99,34 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Vue from 'vue';
+import axios from "axios";
+import Vue from "vue";
 
-Vue.use(require('vue-moment'));
+Vue.use(require("vue-moment"));
 
 export default {
-  name: 'todo-list',
-  data () {
+  name: "todo-list",
+  data() {
     return {
       canAddTodo: false,
       todos: [],
       completedTodos: [],
-      newTodoText: '',
+      newTodoText: "",
       showCompleted: false,
       editTodoText: false,
       todoToEdit: {},
-      editTodoText: '',
+      editTodoText: "",
       showEditForm: false,
-      apiUrl: 'https://58beac9f4389c312007f4044.mockapi.io/todo'
-    }
+      apiUrl: "https://58beac9f4389c312007f4044.mockapi.io/todo"
+    };
   },
   mounted() {
     this.fetchTodos();
   },
   methods: {
     fetchTodos() {
-      axios.get(this.apiUrl)
+      axios
+        .get(this.apiUrl)
         .then(response => {
           this.todos = response.data.filter(todo => !todo.completed);
           this.completedTodos = response.data.filter(todo => todo.completed);
@@ -142,22 +143,24 @@ export default {
       };
 
       this.todos.push(newTodo);
-      this.newTodoText = '';
+      this.newTodoText = "";
       this.canAddTodo = false;
 
-      axios.post(this.apiUrl, newTodo)
-        .then(response => console.log('Todo Successfully added.'));
+      axios
+        .post(this.apiUrl, newTodo)
+        .then(response => console.log("Todo Successfully added."));
     },
     completeTodo(todo) {
       todo.completed = true;
-      
-      this.todos = this.todos.filter((t) => t.id !== todo.id);
+
+      this.todos = this.todos.filter(t => t.id !== todo.id);
       this.completedTodos.push(todo);
-      this.newTodoText = '';
+      this.newTodoText = "";
       this.canAddTodo = false;
-      
-      axios.put(this.apiUrl + '/' + todo.id, todo)
-        .then(response => console.log('completing todo ' + todo.id));
+
+      axios
+        .put(this.apiUrl + "/" + todo.id, todo)
+        .then(response => console.log("completing todo " + todo.id));
     },
     editTodo(todo) {
       this.showEditForm = true;
@@ -167,29 +170,31 @@ export default {
     saveTodo() {
       this.todoToEdit.title = this.editTodoText;
 
-      axios.put(this.apiUrl + '/' + this.todoToEdit.id, this.todoToEdit)
+      axios
+        .put(this.apiUrl + "/" + this.todoToEdit.id, this.todoToEdit)
         .then(response => {
           this.removeEditModal();
         });
     },
     deleteTodo(todo) {
-      this.todos = this.todos.filter((t) => t.id !== todo.id);
-      this.completedTodos = this.completedTodos.filter((t) =>  t.id !== todo.id);
-      axios.delete(this.apiUrl + '/' + todo.id);
+      this.todos = this.todos.filter(t => t.id !== todo.id);
+      this.completedTodos = this.completedTodos.filter(t => t.id !== todo.id);
+      axios.delete(this.apiUrl + "/" + todo.id);
     },
-    checkCanAddTodo () {
-      this.canAddTodo = this.newTodo !== '';
+    checkCanAddTodo() {
+      this.canAddTodo = this.newTodo !== "";
     },
     removeEditModal() {
       this.showEditForm = false;
-      this.editTodoText = '';
+      this.editTodoText = "";
     },
     toggleCompletedTodos() {
       this.showCompleted = this.showCompleted ? false : true;
     }
   }
-}
+};
 </script>
 
 <style scoped>
+
 </style>
