@@ -115,18 +115,28 @@ export default {
       showCompleted: false,
       editTodoText: false,
       todoToEdit: {},
+<<<<<<< HEAD
       editTodoText: "",
       showEditForm: false,
       apiUrl: "https://58beac9f4389c312007f4044.mockapi.io/todo"
     };
+=======
+      editTodoText: '',
+      showEditForm: false
+    }
+>>>>>>> 59a89620b4bfb92652fb0f641fd3a2d1f93a3a19
   },
   mounted() {
     this.fetchTodos();
   },
   methods: {
     fetchTodos() {
+<<<<<<< HEAD
       axios
         .get(this.apiUrl)
+=======
+      axios.get('/todos')
+>>>>>>> 59a89620b4bfb92652fb0f641fd3a2d1f93a3a19
         .then(response => {
           this.todos = response.data.filter(todo => !todo.completed);
           this.completedTodos = response.data.filter(todo => todo.completed);
@@ -146,6 +156,7 @@ export default {
       this.newTodoText = "";
       this.canAddTodo = false;
 
+<<<<<<< HEAD
       axios
         .post(this.apiUrl, newTodo)
         .then(response => console.log("Todo Successfully added."));
@@ -153,14 +164,28 @@ export default {
     completeTodo(todo) {
       todo.completed = true;
 
+=======
+      axios.post('/todos', newTodo)
+        .then(response => console.log('Todo Successfully added.'));
+    },
+    completeTodo(todo) {
+      todo.completed = true;
+      
+>>>>>>> 59a89620b4bfb92652fb0f641fd3a2d1f93a3a19
       this.todos = this.todos.filter(t => t.id !== todo.id);
       this.completedTodos.push(todo);
       this.newTodoText = "";
       this.canAddTodo = false;
+<<<<<<< HEAD
 
       axios
         .put(this.apiUrl + "/" + todo.id, todo)
         .then(response => console.log("completing todo " + todo.id));
+=======
+      
+      axios.put(`/todos/${todo.id}`, todo)
+        .then(response => console.log(`completing todo ${todo.id}`));
+>>>>>>> 59a89620b4bfb92652fb0f641fd3a2d1f93a3a19
     },
     editTodo(todo) {
       this.showEditForm = true;
@@ -170,16 +195,26 @@ export default {
     saveTodo() {
       this.todoToEdit.title = this.editTodoText;
 
+<<<<<<< HEAD
       axios
         .put(this.apiUrl + "/" + this.todoToEdit.id, this.todoToEdit)
+=======
+      axios.put(`/todos/${this.todoToEdit.id}`, this.todoToEdit)
+>>>>>>> 59a89620b4bfb92652fb0f641fd3a2d1f93a3a19
         .then(response => {
           this.removeEditModal();
         });
     },
     deleteTodo(todo) {
+<<<<<<< HEAD
       this.todos = this.todos.filter(t => t.id !== todo.id);
       this.completedTodos = this.completedTodos.filter(t => t.id !== todo.id);
       axios.delete(this.apiUrl + "/" + todo.id);
+=======
+      this.todos = this.todos.filter((t) => t.id !== todo.id);
+      this.completedTodos = this.completedTodos.filter((t) =>  t.id !== todo.id);
+      axios.delete(`/todos/${todo.id}`);
+>>>>>>> 59a89620b4bfb92652fb0f641fd3a2d1f93a3a19
     },
     checkCanAddTodo() {
       this.canAddTodo = this.newTodo !== "";
